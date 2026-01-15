@@ -1,0 +1,214 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>VideoStream - Professional Video Platform</title>
+    <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body>
+    <!-- Navigation -->
+    <nav class="navbar">
+        <div class="nav-container">
+            <div class="nav-brand">
+                <i class="fas fa-play-circle"></i>
+                <span>VideoStream</span>
+            </div>
+            <div class="nav-menu">
+                <a href="#home" class="nav-link active" data-page="home">
+                    <i class="fas fa-home"></i> Home
+                </a>
+                <a href="#upload" class="nav-link" data-page="upload">
+                    <i class="fas fa-upload"></i> Upload
+                </a>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Home Page -->
+    <div id="home" class="page active">
+        <div class="container">
+            <header class="page-header">
+                <h1>Discover Videos</h1>
+                <p>Upload and share your videos with the world</p>
+            </header>
+            
+            <div class="video-grid" id="videoGrid">
+                <!-- Videos will be loaded here dynamically -->
+            </div>
+            
+            <div class="empty-state" id="emptyState" style="display: none;">
+                <i class="fas fa-video"></i>
+                <h3>No videos yet</h3>
+                <p>Be the first to upload a video!</p>
+                <button class="btn btn-primary" onclick="showPage('upload')">
+                    <i class="fas fa-upload"></i> Upload Video
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Upload Page -->
+    <div id="upload" class="page">
+        <div class="container">
+            <header class="page-header">
+                <h1>Upload Video</h1>
+                <p>Share your content with our community</p>
+            </header>
+            
+            <div class="upload-container">
+                <form id="uploadForm" class="upload-form">
+                    <div class="form-group">
+                        <label for="videoFile">Video File</label>
+                        <div class="file-upload-area" id="fileUploadArea">
+                            <input type="file" id="videoFile" accept="video/*" required>
+                            <div class="file-upload-content">
+                                <i class="fas fa-cloud-upload-alt"></i>
+                                <p>Click to browse or drag and drop</p>
+                                <span>MP4, WebM, OGG (Max 100MB)</span>
+                            </div>
+                        </div>
+                        <div class="file-info" id="fileInfo" style="display: none;">
+                            <span id="fileName"></span>
+                            <button type="button" id="removeFile" class="btn-remove">
+                                <i class="fas fa-times"></i>
+                            </button>
+                        </div>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="videoTitle">Title</label>
+                        <input type="text" id="videoTitle" placeholder="Enter video title" required>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="videoDescription">Description</label>
+                        <textarea id="videoDescription" placeholder="Tell viewers about your video" rows="4"></textarea>
+                    </div>
+                    
+                    <button type="submit" class="btn btn-primary btn-large" id="uploadBtn">
+                        <i class="fas fa-upload"></i> Upload Video
+                    </button>
+                    
+                    <div class="progress-container" id="progressContainer" style="display: none;">
+                        <div class="progress-bar">
+                            <div class="progress-fill" id="progressFill"></div>
+                        </div>
+                        <span class="progress-text" id="progressText">0%</span>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <!-- Watch Page -->
+    <div id="watch" class="page">
+        <div class="container">
+            <button class="btn-back" onclick="showPage('home')">
+                <i class="fas fa-arrow-left"></i> Back to Home
+            </button>
+            
+            <div class="watch-container">
+                <div class="video-player-section">
+                    <div class="video-wrapper">
+                        <video id="videoPlayer" controls></video>
+                    </div>
+                    
+                    <div class="video-info">
+                        <h1 id="videoTitle"></h1>
+                        <p id="videoDescription"></p>
+                        <div class="video-meta">
+                            <span id="uploadDate"></span>
+                        </div>
+                        
+                        <div class="video-actions">
+                            <button class="btn-action" id="likeBtn">
+                                <i class="far fa-heart"></i>
+                                <span id="likeCount">0</span>
+                            </button>
+                            
+                            <button class="btn-action" id="shareBtn">
+                                <i class="fas fa-share"></i> Share
+                            </button>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="comments-section">
+                    <h3>Comments</h3>
+                    
+                    <div class="comment-form">
+                        <textarea id="commentInput" placeholder="Add a comment..." rows="2"></textarea>
+                        <button class="btn btn-primary" id="postCommentBtn">
+                            <i class="fas fa-paper-plane"></i> Post
+                        </button>
+                    </div>
+                    
+                    <div class="comments-list" id="commentsList">
+                        <!-- Comments will be loaded here -->
+                    </div>
+                    
+                    <div class="no-comments" id="noComments" style="display: none;">
+                        <p>No comments yet. Be the first to comment!</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Share Modal -->
+    <div class="modal" id="shareModal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3>Share Video</h3>
+                <button class="modal-close" id="closeShareModal">
+                    <i class="fas fa-times"></i>
+                </button>
+            </div>
+            <div class="modal-body">
+                <div class="share-options">
+                    <button class="share-btn" data-platform="facebook">
+                        <i class="fab fa-facebook"></i> Facebook
+                    </button>
+                    <button class="share-btn" data-platform="twitter">
+                        <i class="fab fa-twitter"></i> Twitter
+                    </button>
+                    <button class="share-btn" data-platform="linkedin">
+                        <i class="fab fa-linkedin"></i> LinkedIn
+                    </button>
+                    <button class="share-btn" data-platform="whatsapp">
+                        <i class="fab fa-whatsapp"></i> WhatsApp
+                    </button>
+                </div>
+                
+                <div class="copy-link">
+                    <input type="text" id="shareLink" readonly>
+                    <button class="btn btn-primary" id="copyLinkBtn">
+                        <i class="fas fa-copy"></i> Copy
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Loading Overlay -->
+    <div class="loading-overlay" id="loadingOverlay">
+        <div class="loading-spinner">
+            <i class="fas fa-spinner fa-spin"></i>
+            <p>Loading...</p>
+        </div>
+    </div>
+
+    <!-- Toast Notification -->
+    <div class="toast" id="toast">
+        <div class="toast-content">
+            <i class="fas fa-check-circle"></i>
+            <span id="toastMessage">Success!</span>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <script src="script.js"></script>
+</body>
+</html>
